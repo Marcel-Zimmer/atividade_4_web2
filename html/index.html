@@ -15,7 +15,7 @@
       <br><br>
   
       <label>Matrícula:
-        <input type="text" name="matricula" required>
+        <input type="number" name="matricula" required>
       </label>
       <br><br>
 
@@ -34,20 +34,20 @@
       </label>
       <br><br>
       <label>Salário Base (R$):
-        <input type="number" name="salario" min="0" step="0.01" required>
+        <input type="number" name="salario" step="0.01" required>
       </label>
       <br><br>
   
       <div id="campo-gerente" style="display:none;">
-        <label>Bonificação (%):
-          <input type="number" name="bonus" min="0" max="100">
+        <label>Bonus adicional (R$):
+          <input type="number" name="bonus">
         </label>
         <br><br>
       </div>
 
-      <div id="campo-diretor" style="display:none;">
-        <label>Bonificação (%):
-          <input type="number" name="bonus" min="100" max="300">
+      <div id="campo-diretor" style="display:none;" >
+        <label>Bonus adicional (R$):
+          <input type="number" name="bonus">
         </label>
         <br><br>
       </div>
