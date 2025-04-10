@@ -13,56 +13,80 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var funcionarios = [];
 function mostrarCamposEspecificos(cargo) {
-    var cargoDiretor = document.getElementById('campo-diretor') ? document.getElementById('campo-diretor') : null;
-    var cargoGerente = document.getElementById('campo-gerente') ? document.getElementById('campo-gerente') : null;
-    if (cargo === "diretor") {
-        cargoDiretor ? cargoDiretor.style.display = "block" : null;
-        cargoGerente ? cargoGerente.style.display = "none" : null;
-    }
-    else if (cargo === "gerente") {
-        cargoDiretor ? cargoDiretor.style.display = "none" : null;
-        cargoGerente ? cargoGerente.style.display = "block" : null;
+    var campoBonus = document.getElementById('campo-bonus') ? document.getElementById('campo-bonus') : null;
+    if (cargo === "diretor" || cargo === "gerente") {
+        campoBonus ? campoBonus.style.display = "block" : null;
     }
     else {
-        cargoDiretor ? cargoDiretor.style.display = "none" : null;
-        cargoGerente ? cargoGerente.style.display = "none" : null;
+        campoBonus ? campoBonus.style.display = "none" : null;
     }
 }
 function cadastrarFuncionario(event) {
+    var _a;
     event.preventDefault();
     var form = event.target;
-    var nome = form.nome.value;
-    var setor = form.setor.value;
-    var matricula = form.matricula.value;
+    var nome = form.nome.value.trim();
+    var matriculaStr = form.matricula.value;
+    var setor = form.setor.value.trim();
     var cargo = form.cargo.value;
-    var salarioBase = parseFloat(form.salario.value);
-    var bonus = parseFloat(form.bonus.value) || 0;
-    console.log(nome, setor, matricula, cargo, salarioBase, bonus);
-    console.log(form);
+    var salarioStr = form.salario.value;
+    var bonusStr = (_a = form.bonus) === null || _a === void 0 ? void 0 : _a.value;
+    if (!nome) {
+        alert("Por favor, insira o nome.");
+        return;
+    }
+    var matricula = parseInt(matriculaStr, 10);
+    if (isNaN(matricula) || matricula <= 0) {
+        alert("Por favor, insira uma matrícula válida.");
+        return;
+    }
+    if (!setor) {
+        alert("Por favor, insira o setor.");
+        return;
+    }
+    var salarioBase = parseFloat(salarioStr);
+    if (isNaN(salarioBase) || salarioBase <= 0) {
+        alert("Por favor, insira um salário base válido.");
+        return;
+    }
+    var bonus = parseFloat(bonusStr);
+    if (isNaN(bonus))
+        bonus = 0;
     var pessoa;
-    if (cargo === "diretor") {
-        pessoa = new Diretor(matricula, nome, setor, salarioBase);
-        var novoSalario = salarioBase + bonus;
-        pessoa.setSalario(novoSalario);
-        console.log(novoSalario);
+    switch (cargo) {
+        case "diretor":
+            pessoa = new Diretor(matricula, nome, setor, salarioBase);
+            pessoa.setSalario(salarioBase + bonus);
+            break;
+        case "gerente":
+            pessoa = new Gerente(matricula, nome, setor, salarioBase);
+            pessoa.setSalario(salarioBase + bonus);
+            break;
+        case "auxiliar":
+            pessoa = new Auxiliar(matricula, nome, setor, salarioBase);
+            break;
+        default:
+            alert("Cargo inválido.");
+            return;
     }
-    else if (cargo === "gerente") {
-        pessoa = new Gerente(matricula, nome, setor, salarioBase);
-        var novoSalario = salarioBase + bonus;
-        pessoa.setSalario(novoSalario);
-    }
-    else {
-        pessoa = new Auxiliar(matricula, nome, setor, salarioBase);
-    }
+    funcionarios.push(pessoa);
+    alert("Funcionário cadastrado com sucesso!");
+    form.reset();
+    document.getElementById("campo-bonus").style.display = "none";
+}
+function mostrarFuncionarios() {
     var tabel = document.getElementById('tabela-funcionarios') ? document.getElementById('tabela-funcionarios') : null;
     if (tabel) {
         var tabela = tabel.querySelector('tbody') ? tabel.querySelector('tbody') : null;
         if (tabela) {
-            var linha = document.createElement('tr');
-            linha.innerHTML = "\n              <td>".concat(pessoa.nome, "</td>\n              <td>").concat(pessoa.matricula, "</td>\n              <td>").concat(pessoa.cargo.charAt(0).toUpperCase() + pessoa.cargo.slice(1), "</td>\n              <td>").concat(pessoa.salario.toFixed(2), "</td>\n            ");
-            tabela.appendChild(linha);
-            form.reset();
+            for (var _i = 0, funcionarios_1 = funcionarios; _i < funcionarios_1.length; _i++) {
+                var pessoa = funcionarios_1[_i];
+                var linha = document.createElement('tr');
+                linha.innerHTML = "\n                <td>".concat(pessoa.nome, "</td>\n                <td>").concat(pessoa.matricula, "</td>\n                <td>").concat(pessoa.cargo.charAt(0).toUpperCase() + pessoa.cargo.slice(1), "</td>\n                <td>").concat(pessoa.salario, "</td>\n                ");
+                tabela.appendChild(linha);
+            }
         }
     }
 }

@@ -38,21 +38,18 @@
       </label>
       <br><br>
   
-      <div id="campo-gerente" style="display:none;">
-        <label>Bonus adicional (R$):
-          <input type="number" name="bonus">
-        </label>
-        <br><br>
-      </div>
-
-      <div id="campo-diretor" style="display:none;" >
+      <div id="campo-bonus" style="display: none;">
         <label>Bonus adicional (R$):
           <input type="number" name="bonus">
         </label>
         <br><br>
       </div>
       <button type="submit">Cadastrar</button>
+      
     </form>
+    <br>
+    <button method="GET" onclick="mostrarFuncionarios()">Mostrar Funcionários</button>
+    
   
     <h3>Funcionários Cadastrados</h3>
     <table border="1" id="tabela-funcionarios">
@@ -68,6 +65,6 @@
         
       </tbody>
     </table>
-    <script src = "./index.js"></script>
+    <script src = "index.js"></script>
 </body> 
 </html>
